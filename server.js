@@ -35,7 +35,6 @@ app.get("/api/notes", function(req, res) {
   fs.readFile((path.join(__dirname, 'db/db.json')),'utf8',function(error,data) {
     if (error) throw error
     // notes=(data);
-    console.log(data)
     res.json(JSON.parse(data))
   })
 
@@ -48,7 +47,6 @@ app.get("/api/notes/:id", function(req, res) {
     let notes2 = JSON.parse(data);
     for (let i = 0; i < notes2.length; i++) {
       if(id == notes2[i].id){
-        console.log(notes2[i].id)
         res.json(notes2[i])  
       }
     }
@@ -61,12 +59,12 @@ app.delete("/api/notes/:id",function(req,res){
     if (error) throw error
     let notes2 = JSON.parse(data);
     
-    for (let i = 0; i< notes2.length; i++) {
+    for (let i = 0; i < notes2.length; i++) {
       if(id == notes2[i].id){
         notes2.splice(notes2[i].id-1 ,1) 
       }
     }
-    for (let i = 0; i< notes2.length; i++) {
+    for (let i = 0; i < notes2.length; i++) {
       notes2[i].id = i+1
     }
     
@@ -83,25 +81,12 @@ app.post('/api/notes' , function(req,res){
     if (error) throw error
 
     notes = JSON.parse(data)
-
-    var idArray = []
-
-    for (let i = 0; i < notes.length; i++) {
-      idArray.push(notes[i].id)
-    }
-    
-    if (idArray.includes(notes.length)){
-      newNote.id=notes.length +1
-    } else {
-      newNote.id=notes.length +1
-    }
+    newNote.id = notes.length +1
     notes.push(newNote)
     
     fs.writeFile((path.join(__dirname, 'db/db.json')),JSON.stringify(notes),function(error) {
       if (error) throw error
-      
       res.json(notes)
-      
     })
   })
   
